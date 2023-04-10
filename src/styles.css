@@ -1,4 +1,47 @@
+html{
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: grey;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: grey;
+}
+
 .App {
   font-family: sans-serif;
   text-align: center;
+}
+
+.leaflet-container {
+  height: 900px;
+}
+
+nav {
+  display: flex;
+  font-family: 'Inter';
+  align-items: center;
+  margin: 0;
+}
+
+img {
+  margin-left: 15px;
+  margin-right: 10px;
+}
+
+.title {
+  margin-right: auto;
+}
+
+.picker {
+  margin-right: 15px;
+}
+
+footer {
+  font-family: 'Inter';
+  margin: 0;
 }
