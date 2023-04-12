@@ -9,20 +9,21 @@ export default function App() {
   const [coordinates, setCoordinates] = React.useState([36.05, -103.04]);
   const [countyNames, setCountyNames] = React.useState([]);
   const [currentCounty, setCurrentCounty] = React.useState("Dallam");
+  const [style, setStyle] = React.useState({ color: "grey" });
+  const [styleTwo, setStyleTwo] = React.useState({ color: "yellow" });
   const localCounties = counties.features;
+  const [selectedGeo, setSelectedGeo] = React.useState(counties.features[0]);
 
   function picker(e) {
     const pickedCounty = e.target.value;
-    const selectedCountyProps = localCounties.filter(
-      (county) => county.properties.name == currentCounty
-    );
-
-    const selectedCountyCoords =
-      selectedCountyProps[0].geometry.coordinates[0][0];
+    for (let i = 0; i < localCounties.length; i++) {
+      if (localCounties[i].properties.name == pickedCounty) {
+        let value = i;
+        setSelectedGeo(counties.features[i]);
+      }
+    }
     setCurrentCounty(pickedCounty);
-    setCoordinates(selectedCountyCoords);
-    console.log(selectedCountyCoords);
-  }
+}
 
   React.useEffect(function () {
     fetch("https://data.texas.gov/resource/m3yf-ffwm.json")
@@ -47,15 +48,11 @@ export default function App() {
             Texas County Viewer:
           </h1>{" "}
           <h1 id="tc" className="title">
-            {currentCounty} {coordinates}
+            {currentCounty}
           </h1>
           <div className="picker">
             <label for="county">Choose county: </label>
-            <select
-              onChange={picker}
-              id="county"
-              name="county"
-            >
+            <select onChange={picker} id="county" name="county">
               {countyNames}
             </select>
           </div>
@@ -63,7 +60,8 @@ export default function App() {
       </div>
 
       <MapContainer center={[36.05, -103.04]} zoom={8} scrollWheelZoom={true}>
-        <GeoJSON data={localCounties} />
+        <GeoJSON data={localCounties} style={style}/>
+        <GeoJSON data={selectedGeo} style={styleTwo}/>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
